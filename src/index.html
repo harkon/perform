@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        body{
+            margin:0;
+            padding: 0;
+            display: block;
+            position: relative;
+        }
+        header {
+            width: 90%;
+            margin: 0 auto;
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: space-between;
+            align-items: baseline;
+
+        }
+
+        header h1 {
+            margin:0.5em 0;
+            text-align: center;
+            font-weight: 700;
+            color: brown;
+            text-transform: uppercase;
+            flex: 0 1 100%;
+        }
+
+
+        #searchForm {
+            margin: 2em 25%;
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: center;
+            height: 2.5em;
+        }
+
+        #searchForm input {
+            flex: 1 0 60%;
+        }
+
+        #searchForm button{
+            flex: 1 0 5%;
+        }
+
+        #results{
+            display: flex;
+            align-items: center;
+            min-height: 40vh;
+        }
+
+        #next{
+            background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgaGVpZ2h0PSIyNHB4IiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0cHgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6c2tldGNoPSJodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2gvbnMiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48dGl0bGUvPjxkZXNjLz48ZGVmcy8+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIiBpZD0ibWl1IiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSI+PGcgaWQ9IkFydGJvYXJkLTEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC00NjcuMDAwMDAwLCAtMTkxLjAwMDAwMCkiPjxnIGlkPSJzbGljZSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjE1LjAwMDAwMCwgMTE5LjAwMDAwMCkiLz48cGF0aCBkPSJNNDY4LDIwMi41IEM0NjgsMTk2LjE0ODcyNSA0NzMuMTQ4NzI1LDE5MSA0NzkuNSwxOTEgQzQ4NS44NTEyNzUsMTkxIDQ5MSwxOTYuMTQ4NzI1IDQ5MSwyMDIuNSBDNDkxLDIwOC44NTEyNzUgNDg1Ljg1MTI3NSwyMTQgNDc5LjUsMjE0IEM0NzMuMTQ4NzI1LDIxNCA0NjgsMjA4Ljg1MTI3NSA0NjgsMjAyLjUgWiBNNDgwLjY1Njg1NCwxOTYuODQzMTQ2IEw0ODIuMDcxMDY4LDE5OC4yNTczNTkgTDQ3Ny44Mjg0MjcsMjAyLjUgTDQ4Mi4wNzEwNjgsMjA2Ljc0MjY0MSBMNDgwLjY1Njg1NCwyMDguMTU2ODU0IEw0NzUsMjAyLjUgTDQ4MC42NTY4NTQsMTk2Ljg0MzE0NiBaIiBmaWxsPSIjMDAwMDAwIiBpZD0iY2lyY2xlLW5leHQtYXJyb3ctZGlzY2xvc3VyZS1nbHlwaCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNDc5LjUwMDAwMCwgMjAyLjUwMDAwMCkgc2NhbGUoLTEsIDEpIHRyYW5zbGF0ZSgtNDc5LjUwMDAwMCwgLTIwMi41MDAwMDApICIvPjwvZz48L2c+PC9zdmc+') no-repeat;
+            background-size: contain;
+        }
+
+        #prev {
+            background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgaGVpZ2h0PSIyNHB4IiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0cHgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6c2tldGNoPSJodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2gvbnMiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48dGl0bGUvPjxkZXNjLz48ZGVmcy8+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIiBpZD0ibWl1IiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSI+PGcgaWQ9IkFydGJvYXJkLTEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zOTUuMDAwMDAwLCAtMTkxLjAwMDAwMCkiPjxnIGlkPSJzbGljZSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjE1LjAwMDAwMCwgMTE5LjAwMDAwMCkiLz48cGF0aCBkPSJNMzk2LDIwMi41IEMzOTYsMTk2LjE0ODcyNSA0MDEuMTQ4NzI1LDE5MSA0MDcuNSwxOTEgQzQxMy44NTEyNzUsMTkxIDQxOSwxOTYuMTQ4NzI1IDQxOSwyMDIuNSBDNDE5LDIwOC44NTEyNzUgNDEzLjg1MTI3NSwyMTQgNDA3LjUsMjE0IEM0MDEuMTQ4NzI1LDIxNCAzOTYsMjA4Ljg1MTI3NSAzOTYsMjAyLjUgWiBNNDA4LjY1Njg1NCwxOTYuODQzMTQ2IEw0MTAuMDcxMDY4LDE5OC4yNTczNTkgTDQwNS44Mjg0MjcsMjAyLjUgTDQxMC4wNzEwNjgsMjA2Ljc0MjY0MSBMNDA4LjY1Njg1NCwyMDguMTU2ODU0IEw0MDMsMjAyLjUgTDQwOC42NTY4NTQsMTk2Ljg0MzE0NiBaIiBmaWxsPSIjMDAwMDAwIiBpZD0iY2lyY2xlLWJhY2stYXJyb3ctZ2x5cGgiLz48L2c+PC9nPjwvc3ZnPg==') no-repeat;
+            background-size: contain;
+        }
+        .btn{
+            flex: 0 1 5%;
+            min-width: 3em;
+            min-height: 3em;
+
+        }
+        .content {
+            flex: 0 1 90%;
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: center;
+        }
+        .content img {
+            margin: 0.5em;
+        }
+        footer {
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Moovle</h1>
+    </header>
+    <section id="search">
+        <form id="searchForm">
+            <input type="text" name="movie"  placeholder="Type movie name to search" />
+            <button type="submit">Search</button>
+        </form>
+    </section>
+    <section id="results">
+        <div id="prev" class="btn"></div>
+        <div id="content" class="content"></div>
+        <div id="next" class="btn"></div>
+    </section>
+    <footer>
+        <p><strong>Copyright ©2016</strong></p>
+    </footer>
+
+    <script src="app/app.js"></script>
+    <script type="application/javascript">
+
+        var searchForm = document.getElementById('searchForm');
+        var content = document.getElementById('content');
+        var prev = document.getElementById('prev');
+        var next = document.getElementById('next');
+
+        searchForm.addEventListener('focus', function reset(e){
+            e.target.value = '';
+        }, true);
+
+        searchForm.addEventListener('submit', function(e){
+            e.preventDefault();
+            if (!e.target.movie.value) return;
+            var query = JSON.stringify(e.target.movie.value);
+            App.search(query, 1);
+            return;
+        });
+
+        prev.addEventListener('click', function (e) {
+            e.preventDefault();
+            App.previous(--App.result.page);
+            return;
+        });
+
+        next.addEventListener('click', function(e){
+            e.preventDefault();
+            App.next(++App.result.page);
+            return;
+        });
+
+        App.init(content);
+
+    </script>
+</body>
+</html>
