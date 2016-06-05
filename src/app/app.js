@@ -37,14 +37,12 @@ var App = (function () {
     function loadImage(path){
         if(!path) return;
         length++;
-        console.log('l',length)
         var image = new Image();
         image.onerror = function() {
             console.log('error loading image')
         };
         image.onload = function() {
             count++;
-            console.log('c', count)
             content.appendChild(this);
         };
         // start loading
@@ -105,7 +103,7 @@ var App = (function () {
      * @param query
      * @param page
      */
-    function search(query, page){
+    function doSearch(query, page){
         query = (query) ? result.query = query : result.query;
         var url = apiBaseUrl + apiSearchUrl + '?api_key=' + apiKey + '&query=' + query + '&page=' + page;
         content.innerHTML = '';
@@ -120,7 +118,7 @@ var App = (function () {
     function goNext(page){
         if(count < length) return;
         page = (page <= result.total_pages) ? page : 1;
-        search(false, page);
+        doSearch(false, page);
     }
 
     /**
@@ -130,13 +128,13 @@ var App = (function () {
     function goPrevious(page){
         if(count < length) return;
         page = (page >= 1) ? page : result.total_pages;
-        search(false, page);
+        doSearch(false, page);
     }
 
     return {
         result: result,
         init: init,
-        search: search,
+        search: doSearch,
         next: goNext,
         previous: goPrevious
     }
