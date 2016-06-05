@@ -5,7 +5,7 @@
 var App = (function () {
     'use strict';
 
-    var apiKey ='e2d4ca37c05e23e1e281028262a07c75';
+    var apiKey ='xxxxx';
     var apiBaseUrl = 'https://api.themoviedb.org/3';
     var apiImageBaseUrl = 'http://image.tmdb.org/t/p/w185';
     var apiSearchUrl = '/search/movie';
