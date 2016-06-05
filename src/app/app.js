@@ -11,7 +11,12 @@ var App = (function () {
     var apiSearchUrl = '/search/movie';
 
     var result = {};
-    var elem;
+    var searchForm,
+        content,
+        prev,
+        next,
+        count = 0,
+        length = 0;
 
     /**
      * XMLHttpRequest Utility function
@@ -31,12 +36,16 @@ var App = (function () {
      */
     function loadImage(path){
         if(!path) return;
+        length++;
+        console.log('l',length)
         var image = new Image();
         image.onerror = function() {
             console.log('error loading image')
         };
         image.onload = function() {
-            elem.appendChild(this);
+            count++;
+            console.log('c', count)
+            content.appendChild(this);
         };
         // start loading
         image.src = apiImageBaseUrl + path;
@@ -49,7 +58,9 @@ var App = (function () {
     function onSearch(event){
         var json = JSON.parse(event.target.response);
         Object.assign(result, json);
-        result.results.map(function (movie, i, arr) {
+        length = 0;
+        count = 0;
+        result.results.map(function (movie) {
             loadImage(movie.poster_path);
         });
     }
@@ -58,8 +69,35 @@ var App = (function () {
      * Init function
      * @param el
      */
-    function init(el){
-        elem = el;
+    function init(){
+        searchForm = document.getElementById('searchForm');
+        content = document.getElementById('content');
+        prev = document.getElementById('prev');
+        next = document.getElementById('next');
+
+        searchForm.addEventListener('focus', function reset(e){
+            e.target.value = '';
+        }, true);
+
+        searchForm.addEventListener('submit', function(e){
+            e.preventDefault();
+            if (!e.target.movie.value) return;
+            var query = JSON.stringify(e.target.movie.value);
+            App.search(query, 1);
+            return;
+        });
+
+        prev.addEventListener('click', function (e) {
+            e.preventDefault();
+            App.previous(App.result.page + 1);
+            return;
+        });
+
+        next.addEventListener('click', function(e){
+            e.preventDefault();
+            App.next(App.result.page + 1);
+            return;
+        });
     }
 
     /**
@@ -70,7 +108,7 @@ var App = (function () {
     function search(query, page){
         query = (query) ? result.query = query : result.query;
         var url = apiBaseUrl + apiSearchUrl + '?api_key=' + apiKey + '&query=' + query + '&page=' + page;
-        elem.innerHTML = '';
+        content.innerHTML = '';
         request(url, onSearch);
         return;
     }
@@ -80,8 +118,9 @@ var App = (function () {
      * @param page
      */
     function goNext(page){
+        if(count < length) return;
         page = (page <= result.total_pages) ? page : 1;
-        search(result.query, page);
+        search(false, page);
     }
 
     /**
@@ -89,8 +128,9 @@ var App = (function () {
      * @param page
      */
     function goPrevious(page){
+        if(count < length) return;
         page = (page >= 1) ? page : result.total_pages;
-        search(result.query, page);
+        search(false, page);
     }
 
     return {

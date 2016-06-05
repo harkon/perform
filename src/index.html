@@ -104,38 +104,7 @@
 
     <script src="app/app.js"></script>
     <script type="application/javascript">
-
-        var searchForm = document.getElementById('searchForm');
-        var content = document.getElementById('content');
-        var prev = document.getElementById('prev');
-        var next = document.getElementById('next');
-
-        searchForm.addEventListener('focus', function reset(e){
-            e.target.value = '';
-        }, true);
-
-        searchForm.addEventListener('submit', function(e){
-            e.preventDefault();
-            if (!e.target.movie.value) return;
-            var query = JSON.stringify(e.target.movie.value);
-            App.search(query, 1);
-            return;
-        });
-
-        prev.addEventListener('click', function (e) {
-            e.preventDefault();
-            App.previous(--App.result.page);
-            return;
-        });
-
-        next.addEventListener('click', function(e){
-            e.preventDefault();
-            App.next(++App.result.page);
-            return;
-        });
-
-        App.init(content);
-
+        App.init(document.body);
     </script>
 </body>
 </html>
